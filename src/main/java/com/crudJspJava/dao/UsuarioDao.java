@@ -21,21 +21,16 @@ public class UsuarioDao {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		return con;
-	}
-
-
-
-
+		return con; 
+	}  
 public static List<Usuario> getAllUsuarios(){
 	
-	//String sql = "SELECT * FROM contatos";
-	
+	//String sql = "SELECT * FROM contatos";	
 	List<Usuario> list = new ArrayList<Usuario>();
 
 	try {
-	Connection con = null;
-	PreparedStatement ps = con.prepareStatement("SELECT * FROM usuario");
+	Connection con = getConnection();
+	PreparedStatement ps = con.prepareStatement("select * from usuario");
 	//Classe que vai recuperar os dados do banco. ***SELECT****
 	ResultSet rs = ps.executeQuery();
 
@@ -49,6 +44,8 @@ public static List<Usuario> getAllUsuarios(){
 			usuario.setNome(rs.getString("nome"));
 			//Recuperar o password
 			usuario.setPassword(rs.getString("password"));
+			//Recuperar o email
+			usuario.setEmail(rs.getString("email"));
 			//Recuperar o sexo
 			usuario.setSexo(rs.getString("sexo"));
 			//Recuperar o país
@@ -62,4 +59,37 @@ public static List<Usuario> getAllUsuarios(){
 		}
 		return list;
 }
+
+public static Usuario getRegistroById(int id) {
+	Usuario usuario = null;
+	
+	try {
+		Connection con = getConnection();
+		PreparedStatement ps = con.prepareStatement("SELECT * FROM usuario WHERE id = ?");
+		ps.setInt(1, id);
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()) {
+			usuario=new Usuario();
+			//Recuperar o id
+			usuario.setId(rs.getInt("id"));
+			//Recuperar o nome
+			usuario.setNome(rs.getString("nome"));
+			//Recuperar o password
+			usuario.setPassword(rs.getString("password"));
+			//Recuperar o email
+			usuario.setEmail(rs.getString("email"));
+			//Recuperar o sexo
+			usuario.setSexo(rs.getString("sexo"));
+			//Recuperar o país
+			usuario.setPais(rs.getString("pais"));
+		}
+	} catch (Exception e) {
+		System.out.println(e);
+	}
+	
+	return usuario;
+	
 }
+
+}
+
